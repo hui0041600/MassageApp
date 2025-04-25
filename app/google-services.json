@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "7307240779",
+    "project_id": "massageapp-4e69e",
+    "storage_bucket": "massageapp-4e69e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7307240779:android:64d6a2119270315da5b4ce",
+        "android_client_info": {
+          "package_name": "com.example.massageapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW7TGNotdG1ebyTKzL22KKcqfX72nPKL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
