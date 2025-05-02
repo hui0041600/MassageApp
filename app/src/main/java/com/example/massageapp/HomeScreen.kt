@@ -5,12 +5,13 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -29,16 +30,24 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
 
     var selectedService by remember { mutableStateOf<Service?>(null) }
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
 
-    Scaffold{ paddingValues ->
+    Scaffold { paddingValues ->
         Column(
             modifier = modifier
                 .padding(paddingValues)
-                .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(16.dp)
         ) {
-            Text("Welcome to Massage Spa", fontSize = 26.sp, modifier = Modifier.padding(8.dp))
+            // Welcome Text
+            Text(
+                "Welcome to Massage Spa",
+                fontSize = 26.sp,
+                modifier = Modifier.padding(8.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // Service Cards
             services.forEach { service ->
                 Card(
                     shape = RoundedCornerShape(12.dp),
@@ -48,24 +57,36 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
                         .clickable { selectedService = service },
                     elevation = 4.dp
                 ) {
-                    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Image(
                             painter = painterResource(service.imageRes),
                             contentDescription = service.name,
                             modifier = Modifier.size(72.dp)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        Text(service.name, fontSize = 18.sp)
+                        Text(
+                            service.name,
+                            fontSize = 18.sp
+                        )
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text("\uD83D\uDCCD Shop Info", fontSize = 20.sp, modifier = Modifier.padding(bottom = 8.dp))
+            // Shop Info
+            Text(
+                "\uD83D\uDCCD Shop Info",
+                fontSize = 20.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
             Text("Hours: 9:00 AM – 4:00 PM")
             Text("Address: 123 Main Street, City, State")
-
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
@@ -79,6 +100,8 @@ fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
             ) {
                 Text("Open in Google Maps")
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 
