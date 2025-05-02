@@ -1,8 +1,9 @@
 package com.example.massageapp
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -36,6 +37,8 @@ fun ProfileScreen(navController: NavController, modifier: Modifier = Modifier) {
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         scaffoldState = scaffoldState
@@ -43,6 +46,7 @@ fun ProfileScreen(navController: NavController, modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .verticalScroll(scrollState)
                 .padding(16.dp)
         ) {
             Text("My Account", fontSize = 24.sp, modifier = Modifier.padding(bottom = 12.dp))
@@ -62,34 +66,32 @@ fun ProfileScreen(navController: NavController, modifier: Modifier = Modifier) {
             if (bookings.isEmpty()) {
                 Text("No upcoming bookings.")
             } else {
-                LazyColumn {
-                    items(bookings) { booking ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 6.dp),
-                            elevation = 4.dp
-                        ) {
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Text("Name: ${booking.name}")
-                                Text("Phone: ${booking.phone}")
-                                Text("Service: ${booking.service}")
-                                Text("Date: ${booking.date}")
-                                Text("Time: ${booking.time}")
+                bookings.forEach { booking ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp),
+                        elevation = 4.dp
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text("Name: ${booking.name}")
+                            Text("Phone: ${booking.phone}")
+                            Text("Service: ${booking.service}")
+                            Text("Date: ${booking.date}")
+                            Text("Time: ${booking.time}")
 
-                                Text(
-                                    text = "Cancel",
-                                    modifier = Modifier
-                                        .clickable {
-                                            FirestoreService.cancelBooking(booking)
-                                            coroutineScope.launch {
-                                                scaffoldState.snackbarHostState.showSnackbar("Booking canceled.")
-                                            }
+                            Text(
+                                text = "Cancel",
+                                modifier = Modifier
+                                    .clickable {
+                                        FirestoreService.cancelBooking(booking)
+                                        coroutineScope.launch {
+                                            scaffoldState.snackbarHostState.showSnackbar("Booking canceled.")
                                         }
-                                        .padding(top = 8.dp),
-                                    color = MaterialTheme.colors.primary
-                                )
-                            }
+                                    }
+                                    .padding(top = 8.dp),
+                                color = MaterialTheme.colors.primary
+                            )
                         }
                     }
                 }
