@@ -6,6 +6,8 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -54,8 +56,13 @@ fun BookingScreen(modifier: Modifier = Modifier) {
 
     val db = FirebaseFirestore.getInstance()
     val uid = FirebaseAuth.getInstance().currentUser?.uid
+    val scrollState = rememberScrollState()
 
-    Column(modifier = modifier.padding(16.dp)) {
+    Column(
+        modifier = modifier
+            .verticalScroll(scrollState)
+            .padding(16.dp)
+    ) {
         Text("\uD83D\uDCC5 Select a Date", fontSize = 18.sp)
 
         Box(
@@ -170,7 +177,6 @@ fun BookingScreen(modifier: Modifier = Modifier) {
                         FirestoreService.saveBooking(
                             booking,
                             onSuccess = {
-                                // point +10
                                 uid?.let {
                                     db.collection("users").document(it).get().addOnSuccessListener { doc ->
                                         val oldPoints = doc.getLong("points") ?: 0L
